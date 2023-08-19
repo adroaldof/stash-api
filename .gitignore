@@ -26,3 +26,4 @@ postgres/
 !.nvmrc
 !.prettierrc
 !.vscode
+!.yarnrc.yml
