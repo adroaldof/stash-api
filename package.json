@@ -4,9 +4,14 @@
   "version": "0.0.1",
   "license": "UNLICENSED",
   "private": true,
+  "packageManager": "yarn@3.6.2",
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
+    "start": "tsx --watch ./src/infra/http/server.ts",
+    "dev": "docker compose up",
+    "dtw": "docker compose -f docker-compose.test.yml run api yarn vitest --dir ./src/infra",
+    "dsa": "docker container stop $(docker container list -q) || true && docker rm $(docker container list -aq) || true",
     "make-migration": "tsx ./node_modules/.bin/knex migrate:make --knexfile ./src/infra/database/knexfile.mjs",
     "run-migrations": "tsx ./node_modules/.bin/knex migrate:latest --knexfile ./src/infra/database/knexfile.mjs",
     "rollback-migration": "tsx ./node_modules/.bin/knex migrate:rollback --knexfile ./src/infra/database/knexfile.mjs",
@@ -14,13 +19,18 @@
     "run-seed": "tsx ./node_modules/.bin/knex seed:run --knexfile ./src/infra/database/knexfile.mjs"
   },
   "dependencies": {
+    "express": "4.18.2",
+    "http-status-codes": "2.2.0",
     "knex": "2.5.1",
     "pg": "8.11.3",
     "snake-camel": "1.0.8"
   },
   "devDependencies": {
     "@faker-js/faker": "8.0.2",
+    "@types/express": "4.17.17",
+    "@types/supertest": "2.0.12",
     "@vitest/coverage-v8": "0.34.2",
+    "supertest": "6.3.3",
     "tsx": "3.12.7",
     "typescript": "5.1.6",
     "vitest": "0.34.2"

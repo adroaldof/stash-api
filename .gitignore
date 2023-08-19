@@ -6,6 +6,7 @@ coverage/
 dist/
 logs/
 node_modules/
+postgres/
 
 ###############################################################################
 # Ignore these files
