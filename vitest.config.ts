@@ -21,10 +21,10 @@ export default defineConfig({
     testTimeout: 10000,
   },
   resolve: {
-    alias: {
-      '@/use-cases': path.resolve(__dirname, './src/application/use-cases'),
-      '@/entities': path.resolve(__dirname, './src/domain/entities'),
-      '@/': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      { find: '@/use-cases', replacement: path.resolve(__dirname, './src/application/use-cases/') },
+      { find: '@/entities', replacement: path.resolve(__dirname, './src/domain/entities/') },
+      { find: '@/', replacement: path.resolve(__dirname, './src/') },
+    ],
   },
 })
