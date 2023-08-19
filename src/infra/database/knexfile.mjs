@@ -4,6 +4,7 @@ import { snake, toCamel } from 'snake-camel'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
+/* c8 ignore start */
 export default {
   client: process.env.DATABASE_CLIENT || 'pg',
   connection: {
@@ -28,3 +29,4 @@ export default {
   postProcessResponse: (result) => (Array.isArray(result) ? result.map(toCamel) : toCamel(result)),
   wrapIdentifier: (value, origImpl) => origImpl(snake(value)),
 }
+/* c8 ignore end */

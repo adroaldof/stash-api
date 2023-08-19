@@ -6,11 +6,12 @@
   "private": true,
   "packageManager": "yarn@3.6.2",
   "scripts": {
-    "test": "vitest",
+    "test": "NODE_ENV=unit vitest ./src/{application,domain}/**/*.{test,spec}.?(c|m)[jt]s?(x)",
     "coverage": "vitest run --coverage",
     "start": "tsx --watch ./src/infra/http/server.ts",
     "dev": "docker compose up",
     "dtw": "docker compose -f docker-compose.test.yml run api yarn vitest --dir ./src/infra",
+    "dtc": "docker compose -f docker-compose.test.yml run api yarn coverage --dir ./src",
     "dsa": "docker container stop $(docker container list -q) || true && docker rm $(docker container list -aq) || true",
     "make-migration": "tsx ./node_modules/.bin/knex migrate:make --knexfile ./src/infra/database/knexfile.mjs",
     "run-migrations": "tsx ./node_modules/.bin/knex migrate:latest --knexfile ./src/infra/database/knexfile.mjs",
