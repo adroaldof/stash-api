@@ -1,7 +1,4 @@
-import knex, { Knex } from 'knex'
-import knexConfig from './knexfile.mjs'
-
-const connection = knex(knexConfig)
+import { connection } from './connection'
 
 export const migrate = async (): Promise<void> => {
   await connection.migrate.latest()
