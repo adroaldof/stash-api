@@ -18,13 +18,19 @@ beforeAll(async () => {
 
 describe('GET /api/loans/:uuid', () => {
   it('returns `200 OK`', async () => {
-    const { body: output } = (await request.get(`/api/loans/${loan.uuid}`).expect(StatusCodes.OK)) as { body: Loan }
+    const { body: output } = (await request
+      .get(`/api/loans/${loan.uuid}`)
+      .set({ authorization: loan.borrowerUuid })
+      .expect(StatusCodes.OK)) as { body: Loan }
     expect(output.uuid).toEqual(loan.uuid)
     expect(+output.principal).toBeCloseTo(loan.principal, 0.01)
   })
 
   it('returns `400 Bad Request`', async () => {
-    const { body: output } = await request.get('/api/loans/NOT_A_UUID').expect(StatusCodes.BAD_REQUEST)
+    const { body: output } = await request
+      .get('/api/loans/NOT_A_UUID')
+      .set({ authorization: loan.borrowerUuid })
+      .expect(StatusCodes.BAD_REQUEST)
     expect(output).toEqual([
       {
         validation: 'uuid',
@@ -33,5 +39,10 @@ describe('GET /api/loans/:uuid', () => {
         path: ['params', 'uuid'],
       },
     ])
+  })
+
+  it('returns `401 Unauthorized`', async () => {
+    const { body: output } = await request.get(`/api/loans/${loan.uuid}`).expect(StatusCodes.UNAUTHORIZED)
+    expect(output.message).toEqual('unauthorized')
   })
 })

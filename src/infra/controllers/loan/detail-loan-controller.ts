@@ -5,8 +5,8 @@ import { StatusCodes } from 'http-status-codes'
 import { z } from 'zod'
 
 export const detailLoanController = async (req: Request, res: Response) => {
-  const { params } = req
-  const input = { uuid: params.uuid }
+  const { params, userUuid } = req
+  const input = { loanUuid: params.uuid, userUuid: userUuid! }
   const repositories = { getLoanByUuidRepository }
   const output = await executeDetailLoan({ input, repositories })
   return res.status(StatusCodes.OK).send(output)

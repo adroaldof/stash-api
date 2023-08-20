@@ -2,7 +2,8 @@ import { GetLoanByUuidRepository } from '@/application/ports/loan-repository'
 import { Loan } from '@/entities/loan/loan'
 
 type Input = {
-  uuid: string
+  loanUuid: string
+  userUuid: string
 }
 
 type Repositories = {
@@ -15,8 +16,9 @@ type CreateLoan = {
 }
 
 export const executeDetailLoan = async ({ input, repositories }: CreateLoan): Promise<Loan> => {
-  const { uuid } = input
+  const { loanUuid, userUuid } = input
   const { getLoanByUuidRepository } = repositories
-  const loan = await getLoanByUuidRepository({ uuid })
+  const loan = await getLoanByUuidRepository({ loanUuid, userUuid })
+  if (!loan) throw new Error('Loan not found')
   return loan
 }
