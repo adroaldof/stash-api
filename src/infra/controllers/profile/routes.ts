@@ -1,8 +1,9 @@
 import express, { Router } from 'express'
-import { registerController } from './register-controller'
+import { createProfileController, createProfileSchema } from './create-profile-controller'
+import { validate } from '../../middlewares/validate-middleware'
 
 const profileControllers: Router = express.Router()
 
-profileControllers.post('/', registerController)
+profileControllers.post('/', validate(createProfileSchema), createProfileController)
 
 export { profileControllers }

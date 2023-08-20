@@ -33,4 +33,30 @@ describe('POST /api/loans', () => {
       .first()) as Loan
     expect(+created.principal).toEqual(principal)
   })
+
+  it('returns `400 Bad Request` when sending an empty payload', async () => {
+    const { body } = await request.post('/api/loans').send({ lenderUuid: 'NOT_A_UUID' }).expect(StatusCodes.BAD_REQUEST)
+    expect(body).toEqual([
+      {
+        validation: 'uuid',
+        code: 'invalid_string',
+        message: 'Invalid uuid',
+        path: ['body', 'lenderUuid'],
+      },
+      {
+        code: 'invalid_type',
+        expected: 'string',
+        received: 'undefined',
+        path: ['body', 'borrowerUuid'],
+        message: 'borrowerUuid is required',
+      },
+      {
+        code: 'invalid_type',
+        expected: 'number',
+        received: 'undefined',
+        path: ['body', 'principal'],
+        message: 'principal is required',
+      },
+    ])
+  })
 })

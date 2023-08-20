@@ -10,12 +10,12 @@ type Repositories = {
   saveProfileRepository: SaveProfileRepository
 }
 
-type RegisterProfile = {
+type CreateProfile = {
   input: Input
   repositories: Repositories
 }
 
-export const executeRegisterProfile = async ({ input, repositories }: RegisterProfile): Promise<void> => {
+export const executeCreateProfile = async ({ input, repositories }: CreateProfile): Promise<void> => {
   const { saveProfileRepository } = repositories
   const profile = registerProfile(input)
   await saveProfileRepository(profile)

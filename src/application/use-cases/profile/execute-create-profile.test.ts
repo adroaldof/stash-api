@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { beforeEach, expect, it, vi } from 'vitest'
-import { executeRegisterProfile } from './execute-register-profile'
+import { executeCreateProfile } from './execute-create-profile'
 
 let uuid: string
 let email: string
@@ -15,7 +15,7 @@ beforeEach(() => {
 it('registers a profile', async () => {
   const input = { uuid, email, balance }
   const repositories = { saveProfileRepository: vi.fn() }
-  await executeRegisterProfile({ input, repositories })
+  await executeCreateProfile({ input, repositories })
   expect(repositories.saveProfileRepository).toHaveBeenCalledWith({
     uuid,
     email,

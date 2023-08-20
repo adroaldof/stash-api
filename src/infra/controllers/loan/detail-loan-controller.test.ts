@@ -22,4 +22,16 @@ describe('GET /api/loans/:uuid', () => {
     expect(output.uuid).toEqual(loan.uuid)
     expect(+output.principal).toBeCloseTo(loan.principal, 0.01)
   })
+
+  it('returns `400 Bad Request`', async () => {
+    const { body: output } = await request.get('/api/loans/NOT_A_UUID').expect(StatusCodes.BAD_REQUEST)
+    expect(output).toEqual([
+      {
+        validation: 'uuid',
+        code: 'invalid_string',
+        message: 'Invalid uuid',
+        path: ['params', 'uuid'],
+      },
+    ])
+  })
 })

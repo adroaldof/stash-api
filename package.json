@@ -24,7 +24,8 @@
     "http-status-codes": "2.2.0",
     "knex": "2.5.1",
     "pg": "8.11.3",
-    "snake-camel": "1.0.8"
+    "snake-camel": "1.0.8",
+    "zod": "3.22.2"
   },
   "devDependencies": {
     "@faker-js/faker": "8.0.2",
