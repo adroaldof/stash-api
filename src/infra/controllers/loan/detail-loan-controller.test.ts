@@ -6,6 +6,7 @@ import { tableNames } from '@/database/table-names.mjs'
 import { connection } from '@/database/connection'
 import { Loan } from '@/entities/loan/loan'
 import { mockLoan } from '@/entities/loan/loan.mocks'
+import { faker } from '@faker-js/faker'
 
 const request: SuperTest<Test> = supertest(server)
 
@@ -17,13 +18,30 @@ beforeAll(async () => {
 })
 
 describe('GET /api/loans/:uuid', () => {
-  it('returns `200 OK`', async () => {
+  it('returns `200 OK` the lender landing', async () => {
+    const { body: output } = (await request
+      .get(`/api/loans/${loan.uuid}`)
+      .set({ authorization: loan.lenderUuid })
+      .expect(StatusCodes.OK)) as { body: Loan }
+    expect(output.uuid).toEqual(loan.uuid)
+    expect(+output.principal).toBeCloseTo(loan.principal, 0.01)
+  })
+
+  it('returns `200 OK` the borrower landing', async () => {
     const { body: output } = (await request
       .get(`/api/loans/${loan.uuid}`)
       .set({ authorization: loan.borrowerUuid })
       .expect(StatusCodes.OK)) as { body: Loan }
     expect(output.uuid).toEqual(loan.uuid)
     expect(+output.principal).toBeCloseTo(loan.principal, 0.01)
+  })
+
+  it('returns `404 Not Found` when the authorization does not belong to neither lender nor borrower', async () => {
+    const { body: output } = await request
+      .get(`/api/loans/${loan.uuid}`)
+      .set({ authorization: faker.string.uuid() })
+      .expect(StatusCodes.NOT_FOUND)
+    expect(output.message).toBe('Loan not found')
   })
 
   it('returns `400 Bad Request`', async () => {

@@ -1,4 +1,4 @@
-import { GetLoanByUuidRepository, SaveLoanRepository } from '@/application/ports/loan-repository'
+import { GetLoanByUuidRepository, ListLoansRepository, SaveLoanRepository } from '@/application/ports/loan-repository'
 import { Loan } from '@/entities/loan/loan'
 import { Status } from '@/domain/common-types'
 import { tableNames } from '@/database/table-names.mjs'
@@ -11,10 +11,18 @@ export const saveLoanRepository: SaveLoanRepository = async (loan) => {
 export const getLoanByUuidRepository: GetLoanByUuidRepository = async ({ loanUuid, userUuid }) => {
   const databaseOutput = await connection<LoanDatabaseOutput>(tableNames.loan)
     .where({ uuid: loanUuid })
-    .orWhere({ lenderUuid: userUuid })
-    .orWhere({ borrowerUuid: userUuid })
+    .andWhere((builder) => {
+      builder.orWhere({ lenderUuid: userUuid }).orWhere({ borrowerUuid: userUuid })
+    })
     .first()
   return databaseOutput ? fromDatabaseOutputToLoan(databaseOutput) : null
+}
+
+export const listLoansRepository: ListLoansRepository = async ({ userUuid }) => {
+  const databaseOutput = await connection<LoanDatabaseOutput>(tableNames.loan)
+    .where({ lenderUuid: userUuid })
+    .orWhere({ borrowerUuid: userUuid })
+  return databaseOutput.map(fromDatabaseOutputToLoan)
 }
 
 type LoanDatabaseOutput = {

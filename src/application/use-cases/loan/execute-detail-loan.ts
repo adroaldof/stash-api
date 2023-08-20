@@ -10,12 +10,12 @@ type Repositories = {
   getLoanByUuidRepository: GetLoanByUuidRepository
 }
 
-type CreateLoan = {
+type DetailLoan = {
   input: Input
   repositories: Repositories
 }
 
-export const executeDetailLoan = async ({ input, repositories }: CreateLoan): Promise<Loan> => {
+export const executeDetailLoan = async ({ input, repositories }: DetailLoan): Promise<Loan> => {
   const { loanUuid, userUuid } = input
   const { getLoanByUuidRepository } = repositories
   const loan = await getLoanByUuidRepository({ loanUuid, userUuid })

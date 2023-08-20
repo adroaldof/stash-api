@@ -8,8 +8,12 @@ export const detailLoanController = async (req: Request, res: Response) => {
   const { params, userUuid } = req
   const input = { loanUuid: params.uuid, userUuid: userUuid! }
   const repositories = { getLoanByUuidRepository }
-  const output = await executeDetailLoan({ input, repositories })
-  return res.status(StatusCodes.OK).send(output)
+  try {
+    const output = await executeDetailLoan({ input, repositories })
+    return res.status(StatusCodes.OK).send(output)
+  } catch (error: any) {
+    return res.status(StatusCodes.NOT_FOUND).send({ message: error.message })
+  }
 }
 
 export const detailLoanSchema = z.object({
