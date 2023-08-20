@@ -16,11 +16,12 @@
       "@/entities/*": ["./src/domain/entities/*"],
       "@/controllers/*": ["./src/infra/controllers/*"],
       "@/database/*": ["./src/infra/database/*"],
+      "@/middlewares/*": ["./src/infra/middlewares/*"],
       "@/http/*": ["./src/infra/http/*"],
       "@/repositories/*": ["./src/infra/repositories/*"],
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "test-utils"],
+  "include": ["src", "test-utils", "types"],
   "exclude": ["node_modules"]
 }

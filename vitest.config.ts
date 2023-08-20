@@ -28,6 +28,7 @@ export default defineConfig({
       { find: '@/controllers', replacement: path.resolve(__dirname, './src/infra/controllers/') },
       { find: '@/database', replacement: path.resolve(__dirname, './src/infra/database/') },
       { find: '@/http', replacement: path.resolve(__dirname, './src/infra/http/') },
+      { find: '@/middlewares', replacement: path.resolve(__dirname, './src/infra/middlewares/') },
       { find: '@/repositories', replacement: path.resolve(__dirname, './src/infra/repositories/') },
       { find: '@/', replacement: path.resolve(__dirname, './src/') },
     ],
