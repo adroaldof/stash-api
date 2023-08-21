@@ -22,6 +22,7 @@ postgres/
 ###############################################################################
 
 !.editorconfig
+!.eslintrc.cjs
 !.gitignore
 !.gitlab-ci.yml
 !.nvmrc
