@@ -4,6 +4,9 @@ stages:
   - Setup
   - Test
 
+before_script:
+  - yarn set version berry
+
 cache:
   key:
     files:
