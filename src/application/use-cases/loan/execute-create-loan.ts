@@ -2,21 +2,21 @@ import { SaveLoanRepository } from '@/application/ports/loan-repository'
 import { GetProfileRepository } from '@/application/ports/profile-repository'
 import { createLoan } from '@/entities/loan/create-loan'
 
-type Input = {
+export type CreateLoanInput = {
   lenderUuid: string
   borrowerUuid: string
   principal: number
   transactionDate?: Date
 }
 
-type Repositories = {
+export type CreateLoanRepositories = {
   getProfileRepository: GetProfileRepository
   saveLoanRepository: SaveLoanRepository
 }
 
 type CreateLoan = {
-  input: Input
-  repositories: Repositories
+  input: CreateLoanInput
+  repositories: CreateLoanRepositories
 }
 
 export const executeCreateLoan = async ({ input, repositories }: CreateLoan): Promise<void> => {

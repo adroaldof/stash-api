@@ -2,7 +2,7 @@ import { GetLoanByUuidRepository } from '@/application/ports/loan-repository'
 import { CreatePaymentRepository } from '@/application/ports/payment-repository'
 import { makePayment } from '@/entities/payment/make-payment'
 
-type Input = {
+export type MakePaymentInput = {
   loanUuid: string
   userUuid: string
   amount: number
@@ -14,12 +14,12 @@ export type MakePaymentRepositories = {
   createPaymentRepository: CreatePaymentRepository
 }
 
-type CreateLoan = {
-  input: Input
+type MakePayment = {
+  input: MakePaymentInput
   repositories: MakePaymentRepositories
 }
 
-export const executeMakePayment = async ({ input, repositories }: CreateLoan): Promise<void> => {
+export const executeMakePayment = async ({ input, repositories }: MakePayment): Promise<void> => {
   const { loanUuid, userUuid, amount, transactionDate } = input
   const { getLoanByUuidRepository, createPaymentRepository } = repositories
   const loan = await getLoanByUuidRepository({ loanUuid, userUuid })

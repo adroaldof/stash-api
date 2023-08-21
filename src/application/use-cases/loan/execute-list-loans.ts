@@ -1,17 +1,17 @@
 import { ListLoansRepository } from '@/application/ports/loan-repository'
 import { Loan } from '@/entities/loan/loan'
 
-type Input = {
+export type ListLoansInput = {
   userUuid: string
 }
 
-type Repositories = {
+export type ListLoansRepositories = {
   listLoansRepository: ListLoansRepository
 }
 
 type ListLoans = {
-  input: Input
-  repositories: Repositories
+  input: ListLoansInput
+  repositories: ListLoansRepositories
 }
 
 export const executeListLoans = async ({ input, repositories }: ListLoans): Promise<Loan[]> => {

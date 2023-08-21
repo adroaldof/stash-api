@@ -1,13 +1,18 @@
 import { saveProfileRepository } from '@/repositories/profile-repository'
-import { executeCreateProfile } from '@/use-cases/profile/execute-create-profile'
+import {
+  CreateProfileInput,
+  CreateProfileRepositories,
+  executeCreateProfile,
+} from '@/use-cases/profile/execute-create-profile'
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { z } from 'zod'
 
 export const createProfileController = async (req: Request, res: Response) => {
   const { body } = req
-  const repositories = { saveProfileRepository }
-  await executeCreateProfile({ input: body, repositories })
+  const input: CreateProfileInput = body
+  const repositories: CreateProfileRepositories = { saveProfileRepository }
+  await executeCreateProfile({ input, repositories })
   return res.sendStatus(StatusCodes.CREATED)
 }
 

@@ -1,13 +1,13 @@
 import { getLoanByUuidRepository } from '@/repositories/loan-repository'
 import { createPaymentRepository } from '@/repositories/payment-repository'
-import { MakePaymentRepositories, executeMakePayment } from '@/use-cases/loan/execute-make-payment'
+import { MakePaymentInput, MakePaymentRepositories, executeMakePayment } from '@/use-cases/loan/execute-make-payment'
 import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { z } from 'zod'
 
 export const makePaymentController = async (req: Request, res: Response) => {
   const { body, params, userUuid } = req
-  const input = { ...body, loanUuid: params.uuid, userUuid }
+  const input: MakePaymentInput = { ...body, loanUuid: params.uuid, userUuid }
   const repositories: MakePaymentRepositories = { getLoanByUuidRepository, createPaymentRepository }
   await executeMakePayment({ input, repositories })
   return res.sendStatus(StatusCodes.CREATED)

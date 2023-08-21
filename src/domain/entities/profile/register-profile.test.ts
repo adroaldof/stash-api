@@ -17,6 +17,7 @@ it('register a profile with uuid, email and amount', () => {
   expect(registeredProfile).toEqual(
     expect.objectContaining({
       uuid: expect.any(String),
+      email: expect.any(String),
       balance: expect.any(Number),
     }),
   )

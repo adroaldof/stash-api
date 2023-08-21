@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest'
-import { executeDetailLoan } from './execute-detail-loan'
+import { DetailLoanInput, DetailLoanRepositories, executeDetailLoan } from './execute-detail-loan'
 import { Loan } from '@/entities/loan/loan'
 import { mockLoan } from '@/entities/loan/loan.mocks'
 import { faker } from '@faker-js/faker'
@@ -15,8 +15,8 @@ beforeEach(() => {
 })
 
 it('calls get loan by uuid repository when the caller is the lender', async () => {
-  const input = { loanUuid: loan.uuid, userUuid: loan.lenderUuid }
-  const repositories = {
+  const input: DetailLoanInput = { loanUuid: loan.uuid, userUuid: loan.lenderUuid }
+  const repositories: DetailLoanRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(loan),
     listPaymentsByLoanUuidRepository: vi.fn().mockResolvedValueOnce(payments),
   }
@@ -42,8 +42,8 @@ it('calls get loan by uuid repository when the caller is the lender', async () =
 })
 
 it('calls get loan by uuid repository when the caller is the borrower', async () => {
-  const input = { loanUuid: loan.uuid, userUuid: loan.borrowerUuid }
-  const repositories = {
+  const input: DetailLoanInput = { loanUuid: loan.uuid, userUuid: loan.borrowerUuid }
+  const repositories: DetailLoanRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(loan),
     listPaymentsByLoanUuidRepository: vi.fn().mockResolvedValueOnce([]),
   }
@@ -65,8 +65,8 @@ it('calls get loan by uuid repository when the caller is the borrower', async ()
 })
 
 it('throws `Loan not found` when the loan uuid is not found', async () => {
-  const input = { loanUuid: loan.uuid, userUuid: faker.string.uuid() }
-  const repositories = {
+  const input: DetailLoanInput = { loanUuid: loan.uuid, userUuid: faker.string.uuid() }
+  const repositories: DetailLoanRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(null),
     listPaymentsByLoanUuidRepository: vi.fn().mockResolvedValueOnce([]),
   }

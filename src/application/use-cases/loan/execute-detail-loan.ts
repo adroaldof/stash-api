@@ -2,19 +2,19 @@ import { GetLoanByUuidRepository } from '@/application/ports/loan-repository'
 import { ListPaymentsByLoanUuidRepository } from '@/application/ports/payment-repository'
 import { Loan } from '@/entities/loan/loan'
 
-type Input = {
+export type DetailLoanInput = {
   loanUuid: string
   userUuid: string
 }
 
-type Repositories = {
+export type DetailLoanRepositories = {
   getLoanByUuidRepository: GetLoanByUuidRepository
   listPaymentsByLoanUuidRepository: ListPaymentsByLoanUuidRepository
 }
 
 type DetailLoan = {
-  input: Input
-  repositories: Repositories
+  input: DetailLoanInput
+  repositories: DetailLoanRepositories
 }
 
 export const executeDetailLoan = async ({ input, repositories }: DetailLoan): Promise<Loan> => {

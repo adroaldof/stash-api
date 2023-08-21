@@ -1,18 +1,19 @@
 import { SaveProfileRepository } from '@/application/ports/profile-repository'
 import { registerProfile } from '@/entities/profile/register-profile'
 
-type Input = {
+export type CreateProfileInput = {
+  uuid?: string
   email: string
-  balance: number
+  balance?: number
 }
 
-type Repositories = {
+export type CreateProfileRepositories = {
   saveProfileRepository: SaveProfileRepository
 }
 
 type CreateProfile = {
-  input: Input
-  repositories: Repositories
+  input: CreateProfileInput
+  repositories: CreateProfileRepositories
 }
 
 export const executeCreateProfile = async ({ input, repositories }: CreateProfile): Promise<void> => {

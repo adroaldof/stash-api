@@ -18,6 +18,7 @@ it('creates a loan with lender, borrower and amount borrowed', async () => {
   const createdLoan = createLoan({ lender, borrower, principal })
   expect(createdLoan).toEqual(
     expect.objectContaining({
+      uuid: expect.any(String),
       lenderUuid: expect.any(String),
       borrowerUuid: expect.any(String),
       principal: expect.any(Number),

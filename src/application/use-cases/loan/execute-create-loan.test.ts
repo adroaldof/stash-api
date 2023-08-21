@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { beforeEach, expect, it, vi } from 'vitest'
-import { executeCreateLoan } from './execute-create-loan'
+import { CreateLoanInput, CreateLoanRepositories, executeCreateLoan } from './execute-create-loan'
 import { mockProfile } from '@/entities/profile/profile.mocks'
 import { Profile } from '@/entities/profile/profile'
 
@@ -15,8 +15,8 @@ beforeEach(() => {
 })
 
 it('calls get profile by uuid and saves loan repositories on creating new loan', async () => {
-  const input = { lenderUuid: lender.uuid, borrowerUuid: borrower.uuid, principal }
-  const repositories = {
+  const input: CreateLoanInput = { lenderUuid: lender.uuid, borrowerUuid: borrower.uuid, principal }
+  const repositories: CreateLoanRepositories = {
     getProfileRepository: vi
       .fn()
       .mockResolvedValueOnce(mockProfile({ uuid: lender.uuid }))
