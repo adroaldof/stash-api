@@ -1,10 +1,11 @@
-image: node:19.5.0-alpine
+image: node:20.5.1-alpine
 
 stages:
   - Setup
   - Test
 
 before_script:
+  - npm install -g yarn
   - yarn set version berry
 
 cache:
