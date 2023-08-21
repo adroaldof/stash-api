@@ -23,6 +23,7 @@ postgres/
 
 !.editorconfig
 !.gitignore
+!.gitlab-ci.yml
 !.nvmrc
 !.prettierrc
 !.vscode

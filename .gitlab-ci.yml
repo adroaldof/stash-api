@@ -1,0 +1,53 @@
+image: node:19.5.0-alpine
+
+stages:
+  - Setup
+  - Test
+
+cache:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules/
+  policy: pull
+
+Install Dependencies:
+  stage: Setup
+  script:
+    - yarn
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules/
+    policy: push
+
+Lint Files:
+  stage: Setup
+  script:
+    - yarn lint
+
+Run Unit Tests:
+  stage: Test
+  script: yarn test
+
+Run Integration Tests:
+  stage: Test
+  script: yarn test-integration
+  services:
+    - postgres:15.1-alpine
+  variables:
+    NODE_ENV: test
+    POSTGRES_HOST: postgres
+    POSTGRES_DB: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+
+Run Coverage Tests:
+  extends: Run Integration Tests
+  script: yarn test-coverage
+  only:
+    - main
+  when: manual
