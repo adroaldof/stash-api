@@ -18,6 +18,7 @@
       "@/database/*": ["./src/infra/database/*"],
       "@/middlewares/*": ["./src/infra/middlewares/*"],
       "@/http/*": ["./src/infra/http/*"],
+      "@/logger/*": ["./src/infra/logger/*"],
       "@/repositories/*": ["./src/infra/repositories/*"],
       "@/*": ["./src/*"]
     }
