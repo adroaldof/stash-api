@@ -10,10 +10,8 @@ export const saveLoanRepository: SaveLoanRepository = async (loan) => {
 
 export const getLoanByUuidRepository: GetLoanByUuidRepository = async ({ loanUuid, userUuid }) => {
   const databaseOutput = await connection<LoanDatabaseOutput>(tableNames.loan)
-    .where({ uuid: loanUuid })
-    .andWhere((builder) => {
-      builder.orWhere({ lenderUuid: userUuid }).orWhere({ borrowerUuid: userUuid })
-    })
+    .where((builder) => builder.orWhere({ lenderUuid: userUuid }).orWhere({ borrowerUuid: userUuid }))
+    .andWhere({ uuid: loanUuid })
     .first()
   return databaseOutput ? fromDatabaseOutputToLoan(databaseOutput) : null
 }
