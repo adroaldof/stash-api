@@ -24,6 +24,7 @@ it('calls save loan repository on making a payment', async () => {
   expect(repositories.createPaymentRepository).toHaveBeenCalledWith({
     loanUuid: loan.uuid,
     amount,
+    transactionDate: expect.any(Date),
   })
 })
 

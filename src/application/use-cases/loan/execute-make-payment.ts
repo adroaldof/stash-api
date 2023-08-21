@@ -1,5 +1,6 @@
 import { GetLoanByUuidRepository } from '@/application/ports/loan-repository'
 import { CreatePaymentRepository } from '@/application/ports/payment-repository'
+import { makePayment } from '@/entities/payment/make-payment'
 
 type Input = {
   loanUuid: string
@@ -23,5 +24,6 @@ export const executeMakePayment = async ({ input, repositories }: CreateLoan): P
   const { getLoanByUuidRepository, createPaymentRepository } = repositories
   const loan = await getLoanByUuidRepository({ loanUuid, userUuid })
   if (!loan) throw new Error('Loan not found')
-  await createPaymentRepository({ loanUuid, amount, transactionDate })
+  const payment = makePayment({ loan, amount, transactionDate })
+  await createPaymentRepository(payment)
 }
