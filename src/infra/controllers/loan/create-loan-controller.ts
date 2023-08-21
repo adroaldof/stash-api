@@ -1,4 +1,4 @@
-import { saveLoanRepository } from '@/repositories/loan-repository'
+import { createLoanRepository } from '@/repositories/loan-repository'
 import { getProfileRepository } from '@/repositories/profile-repository'
 import { CreateLoanInput, CreateLoanRepositories, executeCreateLoan } from '@/use-cases/loan/execute-create-loan'
 import { Request, Response } from 'express'
@@ -8,7 +8,7 @@ import { z } from 'zod'
 export const createLoanController = async (req: Request, res: Response) => {
   const { body } = req
   const input: CreateLoanInput = body
-  const repositories: CreateLoanRepositories = { getProfileRepository, saveLoanRepository }
+  const repositories: CreateLoanRepositories = { getProfileRepository, createLoanRepository }
   await executeCreateLoan({ input, repositories })
   return res.sendStatus(StatusCodes.CREATED)
 }

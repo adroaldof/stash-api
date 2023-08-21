@@ -14,9 +14,9 @@ beforeEach(() => {
 
 it('registers a profile', async () => {
   const input = { uuid, email, balance }
-  const repositories: CreateProfileRepositories = { saveProfileRepository: vi.fn() }
+  const repositories: CreateProfileRepositories = { createProfileRepository: vi.fn() }
   await executeCreateProfile({ input, repositories })
-  expect(repositories.saveProfileRepository).toHaveBeenCalledWith({
+  expect(repositories.createProfileRepository).toHaveBeenCalledWith({
     uuid,
     email,
     balance,

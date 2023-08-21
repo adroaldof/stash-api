@@ -21,10 +21,10 @@ it('calls get profile by uuid and saves loan repositories on creating new loan',
       .fn()
       .mockResolvedValueOnce(mockProfile({ uuid: lender.uuid }))
       .mockReturnValueOnce(mockProfile({ uuid: borrower.uuid })),
-    saveLoanRepository: vi.fn(),
+    createLoanRepository: vi.fn(),
   }
   await executeCreateLoan({ input, repositories })
   expect(repositories.getProfileRepository).toHaveBeenCalledWith(lender.uuid)
   expect(repositories.getProfileRepository).toHaveBeenCalledWith(borrower.uuid)
-  expect(repositories.saveLoanRepository).toHaveBeenCalled()
+  expect(repositories.createLoanRepository).toHaveBeenCalled()
 })

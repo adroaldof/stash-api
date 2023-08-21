@@ -1,10 +1,10 @@
-import { GetLoanByUuidRepository, ListLoansRepository, SaveLoanRepository } from '@/application/ports/loan-repository'
+import { GetLoanByUuidRepository, ListLoansRepository, CreateLoanRepository } from '@/application/ports/loan-repository'
 import { Loan } from '@/entities/loan/loan'
 import { Status } from '@/domain/common-types'
 import { tableNames } from '@/database/table-names.mjs'
 import { connection } from '@/database/connection'
 
-export const saveLoanRepository: SaveLoanRepository = async (loan) => {
+export const createLoanRepository: CreateLoanRepository = async (loan) => {
   await connection(tableNames.loan).insert(loan)
 }
 

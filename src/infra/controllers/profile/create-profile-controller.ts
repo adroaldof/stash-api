@@ -1,4 +1,4 @@
-import { saveProfileRepository } from '@/repositories/profile-repository'
+import { createProfileRepository } from '@/repositories/profile-repository'
 import {
   CreateProfileInput,
   CreateProfileRepositories,
@@ -11,7 +11,7 @@ import { z } from 'zod'
 export const createProfileController = async (req: Request, res: Response) => {
   const { body } = req
   const input: CreateProfileInput = body
-  const repositories: CreateProfileRepositories = { saveProfileRepository }
+  const repositories: CreateProfileRepositories = { createProfileRepository }
   await executeCreateProfile({ input, repositories })
   return res.sendStatus(StatusCodes.CREATED)
 }
