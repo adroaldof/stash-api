@@ -29,7 +29,7 @@ describe('POST /api/loans/:uuid/payments', () => {
       .send({ amount, transactionDate: faker.date.recent() })
       .set({ authorization: loan.borrowerUuid })
       .expect(StatusCodes.CREATED)
-    const created = (await connection(tableNames.payments).where({ loanUuid: loan.uuid }).first()) as Payment
+    const created = (await connection(tableNames.payment).where({ loanUuid: loan.uuid }).first()) as Payment
     expect(+created.amount).toEqual(amount)
   })
 

@@ -39,6 +39,6 @@ const fromDatabaseOutputToLoan = (databaseOutput: LoanDatabaseOutput): Loan => (
   uuid: databaseOutput.uuid,
   lenderUuid: databaseOutput.lenderUuid,
   borrowerUuid: databaseOutput.borrowerUuid,
-  principal: databaseOutput.principal,
+  principal: +databaseOutput.principal,
   transactionDate: databaseOutput.transactionDate,
 })

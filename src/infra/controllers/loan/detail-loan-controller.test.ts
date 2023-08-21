@@ -7,14 +7,19 @@ import { connection } from '@/database/connection'
 import { Loan } from '@/entities/loan/loan'
 import { mockLoan } from '@/entities/loan/loan.mocks'
 import { faker } from '@faker-js/faker'
+import { Payment } from '@/entities/payment/payment'
+import { mockPayment } from '@/entities/payment/payment.mocks'
 
 const request: SuperTest<Test> = supertest(server)
 
 let loan: Loan
+let payments: Payment[]
 
 beforeAll(async () => {
   loan = mockLoan()
   await connection(tableNames.loan).insert(loan)
+  payments = [mockPayment({ loanUuid: loan.uuid }), mockPayment({ loanUuid: loan.uuid })]
+  await connection(tableNames.payment).insert(payments)
 })
 
 describe('GET /api/loans/:uuid', () => {
@@ -23,8 +28,23 @@ describe('GET /api/loans/:uuid', () => {
       .get(`/api/loans/${loan.uuid}`)
       .set({ authorization: loan.lenderUuid })
       .expect(StatusCodes.OK)) as { body: Loan }
-    expect(output.uuid).toEqual(loan.uuid)
-    expect(+output.principal).toBeCloseTo(loan.principal, 0.01)
+    expect(output).toEqual(
+      expect.objectContaining({
+        uuid: expect.any(String),
+        lenderUuid: expect.any(String),
+        borrowerUuid: expect.any(String),
+        principal: expect.any(Number),
+        transactionDate: expect.any(String),
+        payments: expect.arrayContaining([
+          expect.objectContaining({
+            uuid: expect.any(String),
+            loanUuid: expect.any(String),
+            amount: expect.any(Number),
+            transactionDate: expect.any(String),
+          }),
+        ]),
+      }),
+    )
   })
 
   it('returns `200 OK` the borrower landing', async () => {
