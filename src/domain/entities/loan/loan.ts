@@ -1,5 +1,5 @@
 export type Loan = {
-  uuid?: string
+  uuid: string
   lenderUuid: string
   borrowerUuid: string
   principal: number
