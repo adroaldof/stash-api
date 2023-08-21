@@ -5,7 +5,6 @@ stages:
   - Test
 
 before_script:
-  - npm install -g yarn
   - yarn set version berry
 
 cache:
