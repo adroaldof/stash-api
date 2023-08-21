@@ -26,7 +26,7 @@ describe('POST /api/loans/:uuid/payments', () => {
   it('returns `201 Created`', async () => {
     await request
       .post(`/api/loans/${loan.uuid}/payments`)
-      .send({ amount, transactionDate: faker.date.recent() })
+      .send({ amount, userUuid, transactionDate: faker.date.recent() })
       .set({ authorization: loan.borrowerUuid })
       .expect(StatusCodes.CREATED)
     const created = (await connection(tableNames.payment).where({ loanUuid: loan.uuid }).first()) as Payment

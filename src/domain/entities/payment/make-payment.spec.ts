@@ -15,7 +15,7 @@ beforeEach(() => {
 })
 
 it('returns a payment object', () => {
-  const input = { loan, amount }
+  const input = { loan, userUuid, amount }
   const output = makePayment(input)
   expect(output).toEqual(
     expect.objectContaining({

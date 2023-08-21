@@ -15,7 +15,7 @@ beforeEach(() => {
 })
 
 it('calls save loan repository on making a payment', async () => {
-  const input = { loanUuid: loan.uuid, userUuid: faker.string.uuid(), amount }
+  const input = { loanUuid: loan.uuid, userUuid, amount }
   const repositories: MakePaymentRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(loan),
     createPaymentRepository: vi.fn(),
@@ -29,7 +29,7 @@ it('calls save loan repository on making a payment', async () => {
 })
 
 it('calls save loan repository on making a payment passing the transaction date', async () => {
-  const input = { loanUuid: loan.uuid, userUuid: faker.string.uuid(), amount, transactionDate: faker.date.recent() }
+  const input = { loanUuid: loan.uuid, userUuid, amount, transactionDate: faker.date.recent() }
   const repositories: MakePaymentRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(loan),
     createPaymentRepository: vi.fn(),

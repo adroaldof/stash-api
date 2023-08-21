@@ -11,7 +11,7 @@ export const validate = (schema: AnyZodObject) => async (req: Request, res: Resp
       headers: req.headers,
     })
     return next()
-  } catch (error: any) {
+  } catch (error: Exception) {
     return res.status(StatusCodes.BAD_REQUEST).json(error.issues)
   }
 }
