@@ -25,12 +25,14 @@
     "knex": "2.5.1",
     "pg": "8.11.3",
     "snake-camel": "1.0.8",
+    "uuid": "^9.0.0",
     "zod": "3.22.2"
   },
   "devDependencies": {
     "@faker-js/faker": "8.0.2",
     "@types/express": "4.17.17",
     "@types/supertest": "2.0.12",
+    "@types/uuid": "^9.0.2",
     "@vitest/coverage-v8": "0.34.2",
     "supertest": "6.3.3",
     "tsx": "3.12.7",
