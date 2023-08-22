@@ -1,3 +1,4 @@
+import { shortDateRegex } from '@/domain/common-definitions'
 import { getLoanByUuidRepository } from '@/repositories/loan-repository'
 import { createPaymentRepository } from '@/repositories/payment-repository'
 import { MakePaymentInput, MakePaymentRepositories, executeMakePayment } from '@/use-cases/loan/execute-make-payment'
@@ -19,6 +20,8 @@ export const makePaymentSchema = z.object({
   }),
   body: z.object({
     amount: z.number({ required_error: 'amount is required' }),
-    transactionDate: z.string().datetime().optional(),
+    transactionDate: z.string().regex(shortDateRegex, 'date format should be YYYY-MM-DD').optional(),
   }),
 })
+
+export type MakePaymentControllerInput = z.infer<typeof makePaymentSchema>

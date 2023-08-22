@@ -8,6 +8,7 @@ import { mockLoan } from '@/entities/loan/loan.mocks'
 import { connection } from '@/database/connection'
 import { tableNames } from '@/database/table-names.mjs'
 import { Payment } from '@/entities/payment/payment'
+import { MakePaymentControllerInput } from './make-payment-controller'
 
 const request: SuperTest<Test> = supertest(server)
 
@@ -24,41 +25,53 @@ beforeAll(async () => {
 
 describe('POST /api/loans/:uuid/payments', () => {
   it('returns `201 Created`', async () => {
+    const input: MakePaymentControllerInput['body'] = {
+      amount,
+      transactionDate: faker.date.recent().toISOString().slice(0, 10),
+    }
     await request
       .post(`/api/loans/${loan.uuid}/payments`)
-      .send({ amount, userUuid, transactionDate: faker.date.recent() })
-      .set({ authorization: loan.borrowerUuid })
+      .send(input)
+      .set({ authorization: userUuid })
       .expect(StatusCodes.CREATED)
-    const created = (await connection(tableNames.payment).where({ loanUuid: loan.uuid }).first()) as Payment
-    expect(+created.amount).toEqual(amount)
+    const createdPayment = (await connection(tableNames.payment).where({ loanUuid: loan.uuid }).first()) as Payment
+    expect(+createdPayment.amount).toEqual(amount)
   })
 
   it('returns `400 Bad Request` when sending an empty payload', async () => {
-    const { body: output } = await request
-      .post('/api/loans')
-      .send({ lenderUuid: 'NOT_A_UUID' })
+    const input: MakePaymentControllerInput['body'] = {
+      amount: null as unknown as number,
+      transactionDate: faker.date.recent().toISOString(),
+    }
+    const { body } = await request
+      .post(`/api/loans/INVALID_UUID/payments`)
+      .send(input)
+      .set({ authorization: userUuid })
       .expect(StatusCodes.BAD_REQUEST)
-    expect(output).toEqual([
+    expect(body).toEqual([
       {
         validation: 'uuid',
         code: 'invalid_string',
         message: 'Invalid uuid',
-        path: ['body', 'lenderUuid'],
-      },
-      {
-        code: 'invalid_type',
-        expected: 'string',
-        received: 'undefined',
-        path: ['body', 'borrowerUuid'],
-        message: 'borrowerUuid is required',
+        path: ['params', 'uuid'],
       },
       {
         code: 'invalid_type',
         expected: 'number',
-        received: 'undefined',
-        path: ['body', 'principal'],
-        message: 'principal is required',
+        received: 'null',
+        path: ['body', 'amount'],
+        message: 'Expected number, received null',
+      },
+      {
+        validation: 'regex',
+        code: 'invalid_string',
+        message: 'date format should be YYYY-MM-DD',
+        path: ['body', 'transactionDate'],
       },
     ])
+  })
+
+  it('returns `401 Unauthorized` when sending an empty payload', async () => {
+    await request.post(`/api/loans/${loan.uuid}/payments`).send({}).expect(StatusCodes.UNAUTHORIZED)
   })
 })
