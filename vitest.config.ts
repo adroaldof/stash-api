@@ -25,6 +25,7 @@ export default defineConfig({
     alias: [
       { find: '@/use-cases', replacement: path.resolve(__dirname, './src/application/use-cases/') },
       { find: '@/entities', replacement: path.resolve(__dirname, './src/domain/entities/') },
+      { find: '@/domain', replacement: path.resolve(__dirname, './src/domain/') },
       { find: '@/controllers', replacement: path.resolve(__dirname, './src/infra/controllers/') },
       { find: '@/database', replacement: path.resolve(__dirname, './src/infra/database/') },
       { find: '@/http', replacement: path.resolve(__dirname, './src/infra/http/') },
