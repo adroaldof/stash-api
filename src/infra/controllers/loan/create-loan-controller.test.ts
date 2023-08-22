@@ -8,6 +8,7 @@ import { connection } from '@/database/connection'
 import { Profile } from '@/entities/profile/profile'
 import { mockProfile } from '@/entities/profile/profile.mocks'
 import { Loan } from '@/entities/loan/loan'
+import { CreateLoanControllerInput } from './create-loan-controller'
 
 const request: SuperTest<Test> = supertest(server)
 
@@ -24,18 +25,27 @@ beforeAll(async () => {
 
 describe('POST /api/loans', () => {
   it('returns `201 Created`', async () => {
-    await request
-      .post('/api/loans')
-      .send({ lenderUuid: lender.uuid, borrowerUuid: borrower.uuid, principal })
-      .expect(StatusCodes.CREATED)
-    const created = (await connection(tableNames.loan)
+    const input: CreateLoanControllerInput['body'] = {
+      lenderUuid: lender.uuid,
+      borrowerUuid: borrower.uuid,
+      principal,
+      transactionDate: new Date('2022-01-01').toISOString().slice(0, 10),
+    }
+    await request.post('/api/loans').send(input).expect(StatusCodes.CREATED)
+    const createdLoan = (await connection(tableNames.loan)
       .where({ lenderUuid: lender.uuid, borrowerUuid: borrower.uuid })
       .first()) as Loan
-    expect(+created.principal).toEqual(principal)
+    expect(+createdLoan.principal).toEqual(principal)
   })
 
   it('returns `400 Bad Request` when sending an empty payload', async () => {
-    const { body } = await request.post('/api/loans').send({ lenderUuid: 'NOT_A_UUID' }).expect(StatusCodes.BAD_REQUEST)
+    const input: CreateLoanControllerInput['body'] = {
+      lenderUuid: 'NOT_A_UUID',
+      borrowerUuid: null as unknown as string,
+      principal: undefined as unknown as number,
+      transactionDate: new Date().toISOString(),
+    }
+    const { body } = await request.post('/api/loans').send(input).expect(StatusCodes.BAD_REQUEST)
     expect(body).toEqual([
       {
         validation: 'uuid',
@@ -46,9 +56,9 @@ describe('POST /api/loans', () => {
       {
         code: 'invalid_type',
         expected: 'string',
-        received: 'undefined',
+        received: 'null',
         path: ['body', 'borrowerUuid'],
-        message: 'borrowerUuid is required',
+        message: 'Expected string, received null',
       },
       {
         code: 'invalid_type',
@@ -56,6 +66,12 @@ describe('POST /api/loans', () => {
         received: 'undefined',
         path: ['body', 'principal'],
         message: 'principal is required',
+      },
+      {
+        validation: 'regex',
+        code: 'invalid_string',
+        message: 'date format should be YYYY-MM-DD',
+        path: ['body', 'transactionDate'],
       },
     ])
   })

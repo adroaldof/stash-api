@@ -20,10 +20,10 @@ type CreateLoan = {
 }
 
 export const executeCreateLoan = async ({ input, repositories }: CreateLoan): Promise<void> => {
-  const { lenderUuid, borrowerUuid, principal } = input
+  const { lenderUuid, borrowerUuid, principal, transactionDate } = input
   const { getProfileRepository, createLoanRepository } = repositories
   const lender = await getProfileRepository(lenderUuid)
   const borrower = await getProfileRepository(borrowerUuid)
-  const createdLoan = createLoan({ lender, borrower, principal })
+  const createdLoan = createLoan({ lender, borrower, principal, transactionDate })
   await createLoanRepository(createdLoan)
 }
