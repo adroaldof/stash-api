@@ -25,6 +25,17 @@ beforeAll(async () => {
 
 describe('POST /api/loans/:uuid/payments', () => {
   it('returns `201 Created`', async () => {
+    const input: MakePaymentControllerInput['body'] = { amount }
+    await request
+      .post(`/api/loans/${loan.uuid}/payments`)
+      .send(input)
+      .set({ authorization: userUuid })
+      .expect(StatusCodes.CREATED)
+    const createdPayment = (await connection(tableNames.payment).where({ loanUuid: loan.uuid }).first()) as Payment
+    expect(+createdPayment.amount).toEqual(amount)
+  })
+
+  it('returns `201 Created` accepting transaction date', async () => {
     const input: MakePaymentControllerInput['body'] = {
       amount,
       transactionDate: faker.date.recent().toISOString().slice(0, 10),
