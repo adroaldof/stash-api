@@ -14,7 +14,7 @@ beforeEach(() => {
   amount = faker.number.float({ min: 0, max: loan.principal, precision: 0.01 })
 })
 
-it('calls save loan repository on making a payment', async () => {
+it('calls create payment repository on making a payment', async () => {
   const input: MakePaymentInput = { loanUuid: loan.uuid, userUuid, amount }
   const repositories: MakePaymentRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(loan),
@@ -28,7 +28,7 @@ it('calls save loan repository on making a payment', async () => {
   })
 })
 
-it('calls save loan repository on making a payment passing the transaction date', async () => {
+it('calls create payment repository on making a payment passing the transaction date', async () => {
   const input: MakePaymentInput = { loanUuid: loan.uuid, userUuid, amount, transactionDate: faker.date.recent() }
   const repositories: MakePaymentRepositories = {
     getLoanByUuidRepository: vi.fn().mockResolvedValueOnce(loan),
