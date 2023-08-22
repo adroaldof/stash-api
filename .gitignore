@@ -29,6 +29,7 @@ postgres/
 !.prettierrc
 !.vscode
 !.yarnrc.yml
+!.github/
 
 ###############################################################################
 # Handles Yarn Package Manager
@@ -40,4 +41,3 @@ postgres/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-!.yarnrc.yml
