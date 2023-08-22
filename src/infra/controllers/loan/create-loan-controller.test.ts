@@ -29,13 +29,29 @@ describe('POST /api/loans', () => {
       lenderUuid: lender.uuid,
       borrowerUuid: borrower.uuid,
       principal,
-      transactionDate: new Date('2022-01-01').toISOString().slice(0, 10),
     }
     await request.post('/api/loans').send(input).expect(StatusCodes.CREATED)
     const createdLoan = (await connection(tableNames.loan)
       .where({ lenderUuid: lender.uuid, borrowerUuid: borrower.uuid })
       .first()) as Loan
     expect(+createdLoan.principal).toEqual(principal)
+  })
+
+  it('returns `201 Created` when passing transaction date', async () => {
+    const transactionDate = new Date('2022-01-01')
+    const principal = faker.number.float({ min: 100, max: 1000, precision: 0.01 })
+    const input: CreateLoanControllerInput['body'] = {
+      lenderUuid: lender.uuid,
+      borrowerUuid: borrower.uuid,
+      principal,
+      transactionDate: transactionDate.toISOString().slice(0, 10),
+    }
+    await request.post('/api/loans').send(input).expect(StatusCodes.CREATED)
+    const createdLoan = (await connection(tableNames.loan)
+      .where({ lenderUuid: lender.uuid, borrowerUuid: borrower.uuid, principal })
+      .first()) as Loan
+    expect(+createdLoan.principal).toEqual(principal)
+    expect(new Date(createdLoan.transactionDate!)).toEqual(transactionDate)
   })
 
   it('returns `400 Bad Request` when sending an empty payload', async () => {
